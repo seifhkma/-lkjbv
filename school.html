@@ -1,0 +1,865 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مُذكّرة النتائج  🎀</title>
+  <link href="https://fonts.googleapis.com/css2?family=Marhey:wght@400;700&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --bg-color: #fdf0f4;
+      --card-bg: #ffffff;
+      --primary: #ff8fa3;
+      --primary-dark: #ff4d6d;
+      --accent: #fff0f3;
+      --purple: #c77dff;
+      --gold: #ffb703;
+      --green: #2ec4b6;
+      --green-bg: #e8fcc2;
+      --warning: #ff9f1c;
+      --warning-bg: #fff3bf;
+      --text: #590d22;
+      --text-light: #a4133c;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', sans-serif;
+    }
+    body {
+      background-color: var(--bg-color);
+      background-image: radial-gradient(#ffb3c1 0.8px, transparent 0.8px);
+      background-size: 16px 16px;
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem 3rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    /* ================= HEADER ================= */
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-family: 'Marhey', cursive;
+      font-size: 2.8rem;
+      color: var(--primary-dark);
+      margin-bottom: .3rem;
+      text-shadow: 2px 2px 0px #fff, 4px 4px 0px #ffccd5;
+    }
+    .subtitle {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    /* ================= NAVIGATION ================= */
+    .navigation {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+    .nav-step {
+      background: white;
+      border: 2px solid #ffccd5;
+      padding: 7px 15px;
+      border-radius: 30px;
+      color: #a4133c;
+      font-weight: 900;
+      font-size: .9rem;
+    }
+    .nav-arrow {
+      color: #ff8fa3;
+      font-weight: 900;
+    }
+    /* ================= SEARCH ================= */
+    .search-area {
+      width: 100%;
+      max-width: 650px;
+      margin-bottom: 25px;
+      display: none;
+    }
+    .search-box input {
+      width: 100%;
+      padding: .95rem 1.4rem;
+      border-radius: 30px;
+      border: 2px solid #ffccd5;
+      background: white;
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: bold;
+      outline: none;
+      box-shadow: 0 8px 20px rgba(255,143,163,.15);
+    }
+    .search-box input:focus {
+      border-color: var(--primary);
+    }
+    /* ================= TITLES ================= */
+    .section-title {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .section-title h2 {
+      font-family: 'Marhey', cursive;
+      color: var(--primary-dark);
+      font-size: 1.8rem;
+    }
+    .section-title p {
+      color: #a4133c;
+      font-weight: 700;
+      margin-top: 5px;
+    }
+    /* ================= PAGE SECTIONS ================= */
+    .selection-page {
+      width: 100%;
+      max-width: 1000px;
+      animation: fadeIn .5s ease;
+    }
+    .hidden {
+      display: none !important;
+    }
+    /* ================= GRADE BUTTONS ================= */
+    .grades-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 18px;
+      width: 100%;
+    }
+    .grade-card {
+      background: white;
+      border: 2px solid #ffccd5;
+      border-radius: 25px;
+      min-height: 170px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: .3s;
+      box-shadow: 0 10px 25px rgba(255,143,163,.15);
+    }
+    .grade-card:hover {
+      transform: translateY(-8px) scale(1.03);
+      border-color: var(--primary);
+      box-shadow: 0 15px 30px rgba(255,77,109,.25);
+    }
+    .grade-icon {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+    .grade-number {
+      font-family: 'Marhey', cursive;
+      color: var(--primary-dark);
+      font-size: 2rem;
+    }
+    .grade-label {
+      color: #a4133c;
+      font-weight: 900;
+    }
+    /* ================= SECTION BUTTONS ================= */
+    .sections-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+      max-width: 850px;
+      margin: auto;
+    }
+    .class-card {
+      background: white;
+      border: 3px solid #ffccd5;
+      border-radius: 25px;
+      padding: 35px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: .3s;
+      box-shadow: 0 10px 25px rgba(255,143,163,.15);
+    }
+    .class-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--primary-dark);
+      box-shadow: 0 15px 35px rgba(255,77,109,.25);
+    }
+    .class-icon {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+    .class-name {
+      font-family: 'Marhey', cursive;
+      color: var(--primary-dark);
+      font-size: 1.6rem;
+    }
+    .class-info {
+      color: #a4133c;
+      margin-top: 7px;
+      font-weight: 700;
+    }
+    /* ================= BACK BUTTON ================= */
+    .back-btn {
+      background: white;
+      border: 2px solid #ffccd5;
+      color: var(--text-light);
+      padding: 10px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 900;
+      margin-bottom: 20px;
+      transition: .3s;
+    }
+    .back-btn:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    /* ================= STUDENTS GRID ================= */
+    .students-page {
+      width: 100%;
+      max-width: 1000px;
+    }
+    .students-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .students-header h2 {
+      font-family: 'Marhey', cursive;
+      color: var(--primary-dark);
+      font-size: 2rem;
+    }
+    .students-header span {
+      display: inline-block;
+      margin-top: 8px;
+      background: #ffe5ec;
+      color: var(--primary-dark);
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: 900;
+    }
+    .students-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2rem;
+      perspective: 1000px;
+    }
+    /* ================= ENVELOPES ================= */
+    .envelope-wrapper {
+      height: 260px;
+      cursor: pointer;
+    }
+    .envelope {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform .8s cubic-bezier(.175, .885, .32, 1.275);
+      border-radius: 20px;
+    }
+    .envelope-wrapper.open .envelope {
+      transform: rotateY(180deg);
+    }
+    .env-front, .env-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      border: 2px solid #ffccd5;
+    }
+    /* FRONT */
+    .env-front {
+      background: white;
+      box-shadow: 0 10px 25px rgba(255,143,163,.15);
+    }
+    .env-front:hover {
+      border-color: var(--primary);
+      transform: translateY(-5px);
+    }
+    .wax-seal {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: .8rem;
+      box-shadow: 0 5px 15px rgba(255,77,109,.4);
+    }
+    .student-name {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--text);
+    }
+    .tap-hint {
+      font-size: .8rem;
+      color: var(--primary-dark);
+      margin-top: .5rem;
+      font-weight: 700;
+      background: var(--accent);
+      padding: 4px 12px;
+      border-radius: 12px;
+    }
+    /* BACK */
+    .env-back {
+      background: white;
+      transform: rotateY(180deg);
+      border-color: var(--primary);
+      box-shadow: 0 10px 30px rgba(255,143,163,.25);
+      background-image: linear-gradient(#fff0f3 1px, transparent 1px);
+      background-size: 100% 1.8rem;
+      justify-content: space-evenly;
+      padding: 1rem 0.8rem;
+    }
+    .treat-badge {
+      background: #ffe5ec;
+      color: var(--primary-dark);
+      font-size: .85rem;
+      font-weight: 900;
+      padding: 4px 14px;
+      border-radius: 12px;
+      border: 1px solid #ffb3c1;
+    }
+
+    /* === تمييز العلامة التامة (أخضر) === */
+    .envelope-wrapper.perfect .env-back {
+      border: 3px solid #2ec4b6 !important;
+      background-color: #f0fdfa;
+    }
+    .envelope-wrapper.perfect .treat-badge {
+      background: #cbf3f0;
+      color: #0f766e;
+      border-color: #2ec4b6;
+    }
+    .perfect-banner {
+      position: absolute;
+      top: 8px;
+      background: #2ec4b6;
+      color: white;
+      font-size: .75rem;
+      font-weight: 900;
+      padding: 2px 10px;
+      border-radius: 10px;
+    }
+
+    /* === تمييز حظ أوفر (تحذيري/تنبيه) === */
+    .envelope-wrapper.needs-work .env-back {
+      border: 2px dashed #ff9f1c !important;
+      background-color: #fffdf0;
+    }
+    .envelope-wrapper.needs-work .treat-badge {
+      background: #ffecb3;
+      color: #b76e00;
+      border-color: #ff9f1c;
+    }
+    .needs-work-banner {
+      position: absolute;
+      top: 8px;
+      background: #ff9f1c;
+      color: white;
+      font-size: .75rem;
+      font-weight: 900;
+      padding: 2px 10px;
+      border-radius: 10px;
+    }
+
+    .details-box {
+      width: 100%;
+      display: flex;
+      background: #fff;
+      border: 1.5px solid #ffccd5;
+      padding: 10px 0;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(255,143,163,.1);
+    }
+    .detail-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .detail-item:first-child {
+      border-left: 2px dashed #ffccd5;
+    }
+    .detail-label {
+      font-size: .8rem;
+      color: var(--text-light);
+      font-weight: 900;
+      margin-bottom: 2px;
+    }
+    .detail-val {
+      font-family: 'Marhey', cursive;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--primary-dark);
+      line-height: 1.1;
+    }
+    .status {
+      font-size: 1rem;
+      color: var(--purple);
+      font-weight: 900;
+    }
+
+    /* ================= MOTIVATIONAL MESSAGES SECTION ================= */
+    .encouragement-section {
+      width: 100%;
+      max-width: 650px;
+      margin: 4rem auto 2rem auto;
+      text-align: center;
+    }
+    .encouragement-title {
+      font-family: 'Marhey', cursive;
+      color: var(--primary-dark);
+      font-size: 1.6rem;
+      margin-bottom: 15px;
+    }
+    .encouragement-card {
+      background: white;
+      border: 2px dashed #ff8fa3;
+      border-radius: 25px;
+      padding: 25px 20px;
+      box-shadow: 0 10px 25px rgba(255,143,163,.2);
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all .4s ease;
+    }
+    .msg-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    .msg-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .msg-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 15px;
+    }
+    .msg-dot {
+      width: 10px;
+      height: 10px;
+      background: #ffccd5;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: .3s;
+    }
+    .msg-dot.active {
+      background: var(--primary-dark);
+      width: 22px;
+      border-radius: 10px;
+    }
+
+    /* ================= FOOTER ================= */
+    footer {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px dashed #ffccd5;
+      width: 100%;
+      max-width: 1000px;
+      text-align: center;
+      color: var(--text-light);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+    footer span {
+      color: var(--primary-dark);
+      font-family: 'Marhey', cursive;
+    }
+    
+    /* ================= EMPTY ================= */
+    .empty {
+      text-align: center;
+      background: white;
+      padding: 40px;
+      border-radius: 25px;
+      color: #a4133c;
+      font-weight: 900;
+      border: 2px solid #ffccd5;
+    }
+    /* ================= ANIMATION ================= */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* ================= MOBILE ================= */
+    @media(max-width: 800px) {
+      .grades-grid { grid-template-columns: repeat(2, 1fr); }
+      .sections-grid { grid-template-columns: 1fr; }
+    }
+    @media(max-width: 500px) {
+      h1 { font-size: 2rem; }
+      .grades-grid { grid-template-columns: 1fr; }
+      .students-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>مُذكّرة النتائج  🎀</h1>
+  <p class="subtitle">اختاري صفكِ وشعبتكِ وافتحي ظرفكِ لظهور النتيجه  ✨</p>
+</header>
+
+<div class="navigation">
+  <div class="nav-step" id="navGrade">🪄 الصف</div>
+  <span class="nav-arrow">←</span>
+  <div class="nav-step" id="navClass">🌸 الشعبة</div>
+  <span class="nav-arrow">←</span>
+  <div class="nav-step" id="navStudents">💌 الأسماء</div>
+</div>
+
+<section class="selection-page" id="gradePage">
+  <div class="section-title">
+    <h2>أولاً... اختاري صفكِ 🌷</h2>
+    <p>  Informatics Course Grades   ✨</p>
+  </div>
+  <div class="grades-grid">
+    <div class="grade-card" onclick="selectGrade(7)">
+      <div class="grade-icon">🌸</div>
+      <div class="grade-number">السابع</div>
+      <div class="grade-label">الصف السابع</div>
+    </div>
+    <div class="grade-card" onclick="selectGrade(8)">
+      <div class="grade-icon">🦋</div>
+      <div class="grade-number">الثامن</div>
+      <div class="grade-label">الصف الثامن</div>
+    </div>
+    <div class="grade-card" onclick="selectGrade(9)">
+      <div class="grade-icon">🌷</div>
+      <div class="grade-number">التاسع</div>
+      <div class="grade-label">الصف التاسع</div>
+    </div>
+    <div class="grade-card" onclick="selectGrade(10)">
+      <div class="grade-icon">💗</div>
+      <div class="grade-number">العاشر</div>
+      <div class="grade-label">الصف العاشر</div>
+    </div>
+    <div class="grade-card" onclick="selectGrade(11)">
+      <div class="grade-icon">👑</div>
+      <div class="grade-number">الحادي عشر</div>
+    </div>
+  </div>
+</section>
+
+<section class="selection-page hidden" id="classPage">
+  <button class="back-btn" onclick="goGrades()">↩️ رجوع للصفوف</button>
+  <div class="section-title">
+    <h2>اخترتِ الصف <span id="selectedGradeText"></span> 🎀</h2>
+    <p>الآن اختاري شعبتكِ 🌸</p>
+  </div>
+  <div class="sections-grid">
+    <div class="class-card" onclick="selectClass('الأولى')">
+      <div class="class-icon">🌷</div>
+      <div class="class-name">الشعبة الأولى</div>
+      <div class="class-info">اضغطي للدخول 💌</div>
+    </div>
+    <div class="class-card" onclick="selectClass('الثانية')">
+      <div class="class-icon">🦋</div>
+      <div class="class-name">الشعبة الثانية</div>
+      <div class="class-info">اضغطي للدخول 💌</div>
+    </div>
+    <div class="class-card" onclick="selectClass('الثالثة')">
+      <div class="class-icon">🌸</div>
+      <div class="class-name">الشعبة الثالثة</div>
+      <div class="class-info">اضغطي للدخول 💌</div>
+    </div>
+  </div>
+</section>
+
+<section class="students-page hidden" id="studentsPage">
+  <button class="back-btn" onclick="goClasses()">↩️ رجوع للشُعب</button>
+  <div class="students-header">
+    <h2>💌 أسماء الطلاب</h2>
+    <span id="classTitle"></span>
+  </div>
+  <div class="search-area" id="searchArea">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="🔍 ابحثي عن اسمك ..." oninput="renderStudents()">
+    </div>
+  </div>
+  <div class="students-grid" id="studentsGrid"></div>
+</section>
+
+<!-- قسم الرسائل التشجيعية -->
+<div class="encouragement-section">
+  <div class="encouragement-title">احتفظِ بها في قلبكِ 💌✨</div>
+  <div class="encouragement-card" id="msgCard">
+    <div class="msg-icon" id="msgIcon">🌷</div>
+    <div class="msg-text" id="msgText">جاري تحميل الرسالة ...</div>
+  </div>
+  <div class="msg-controls" id="msgDots"></div>
+</div>
+
+<footer>
+  المطورة: <span>سيدرا طيب</span> | تحت إشراف الأستاذ <span>نذير</span> 🌸
+</footer>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+  launchWelcomeSparkles();
+  initEncouragementMessages();
+});
+
+function launchWelcomeSparkles() {
+  const duration = 2.5 * 1000;
+  const animationEnd = Date.now() + duration;
+  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999 };
+
+  function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  const interval = setInterval(function() {
+    const timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+
+    const particleCount = 50 * (timeLeft / duration);
+    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+  }, 250);
+}
+
+/* ================= 5 رسائل تشجيعية ================= */
+const messages = [
+  { icon: "✨", text: "النجاح ليس مجرد نقطة تصلين إليها، بل رحلة شغف تخوضينها بكل حب وإصرار." },
+  { icon: "🌸", text: "كل جهد صغير تبذلينه اليوم هو زهرة متفتحة تتزين بها أيامكِ القادمة." },
+  { icon: "👑", text: "تذكري دائماً أنكِ تمتلكين قوة وطاقة مذهلة تجعلكِ قادرة على تحقيق أكبر أحلامكِ." },
+  { icon: "🦋", text: "لا تقارني نفسكِ بأحد، فأنتِ فريدة وجميلة بطريقتكِ الخاصة، ونجاحكِ يشبهكِ تماماً." },
+  { icon: "💗", text: "فخورة بكل محاولة ومثابرة، واثقة بأن القادم أجمل ويحمل لكِ الكثير من المسرات." }
+];
+
+let currentMsgIndex = 0;
+
+function initEncouragementMessages() {
+  const dotsContainer = document.getElementById("msgDots");
+  dotsContainer.innerHTML = "";
+
+  messages.forEach((_, idx) => {
+    const dot = document.createElement("div");
+    dot.className = `msg-dot ${idx === 0 ? 'active' : ''}`;
+    dot.onclick = () => showMessage(idx);
+    dotsContainer.appendChild(dot);
+  });
+
+  showMessage(0);
+
+  setInterval(() => {
+    currentMsgIndex = (currentMsgIndex + 1) % messages.length;
+    showMessage(currentMsgIndex);
+  }, 4000);
+}
+
+function showMessage(index) {
+  currentMsgIndex = index;
+  const card = document.getElementById("msgCard");
+  const icon = document.getElementById("msgIcon");
+  const text = document.getElementById("msgText");
+  const dots = document.querySelectorAll(".msg-dot");
+
+  card.style.opacity = "0";
+  card.style.transform = "translateY(8px)";
+
+  setTimeout(() => {
+    icon.innerText = messages[index].icon;
+    text.innerText = messages[index].text;
+    card.style.opacity = "1";
+    card.style.transform = "translateY(0)";
+  }, 200);
+
+  dots.forEach((dot, idx) => {
+    if (idx === index) {
+      dot.classList.add("active");
+    } else {
+      dot.classList.remove("active");
+    }
+  });
+}
+
+const students = [
+  { id: 1, grade: 7, class: "الأولى", name: "سيدرا طيب", score: 40, finalExam: 60, treat: "طموح بلا حدود ✨", status: "متميزة 👑" },
+  { id: 2, grade: 7, class: "الأولى", name: "مريم الأحمد", score: 38, finalExam: 58, treat: "لمسة إبداع 🌸", status: "مبدعة 🌟" },
+  { id: 3, grade: 7, class: "الثانية", name: "شهد خالد", score: 36, finalExam: 55, treat: "تألق مستمر 💖", status: "مبدعة 🌟" },
+  { id: 4, grade: 7, class: "الثانية", name: "حلا يوسف", score: 25, finalExam: 35, treat: "فرصة جديدة للتألق ✨", status: "حظ أوفر ثابر بالمرات القادمة 🍂" },
+  { id: 5, grade: 7, class: "الثالثة", name: "جود عمر", score: 40, finalExam: 60, treat: "عزيمة وإصرار ⭐", status: "متميزة 👑" },
+  { id: 6, grade: 7, class: "الثالثة", name: "لين مصطفى", score: 22, finalExam: 30, treat: "القادم أفضل بالتأكيد 🌱", status: "حظ أوفر ثابر بالمرات القادمة 🍂" },
+
+  { id: 7, grade: 8, class: "الأولى", name: "تالا أحمد", score: 37, finalExam: 56, treat: "إبداع متواصل ✨", status: "مبدعة 🌟" },
+  { id: 8, grade: 8, class: "الأولى", name: "نور محمد", score: 20, finalExam: 35, treat: "استمري في المحاولة 🌷", status: "حظ أوفر ثابر بالمرات القادمة 🍂" },
+  { id: 9, grade: 8, class: "الثانية", name: "رؤى خالد", score: 40, finalExam: 60, treat: "نجمة متألقة ⭐", status: "متميزة 👑" },
+  { id: 10, grade: 8, class: "الثانية", name: "سارة علي", score: 30, finalExam: 48, treat: "طاقة إيجابية 💗", status: "ثابري 💗" },
+
+  { id: 13, grade: 9, class: "الأولى", name: "ريم أحمد", score: 40, finalExam: 60, treat: "قمة التميز 👑", status: "متميزة 👑" },
+  { id: 14, grade: 9, class: "الأولى", name: "آية محمد", score: 24, finalExam: 32, treat: "ثقي ببدء خطوة جديدة ⭐", status: "حظ أوفر ثابر بالمرات القادمة 🍂" },
+
+  { id: 19, grade: 10, class: "الأولى", name: "نورين أحمد", score: 39, finalExam: 58, treat: "رؤية ثاقبة 👑", status: "متميزة 👑" },
+  { id: 25, grade: 11, class: "الأولى", name: "ليان أحمد", score: 40, finalExam: 60, treat: "تفوق استثنائي 👑", status: "متميزة 👑" }
+];
+
+let selectedGrade = null;
+let selectedClass = null;
+
+function selectGrade(grade) {
+  selectedGrade = grade;
+  document.getElementById("selectedGradeText").innerText = getGradeName(grade);
+  document.getElementById("gradePage").classList.add("hidden");
+  document.getElementById("classPage").classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function getGradeName(grade) {
+  const names = { 7: "السابع", 8: "الثامن", 9: "التاسع", 10: "العاشر", 11: "الحادي عشر" };
+  return names[grade];
+}
+
+function selectClass(className) {
+  selectedClass = className;
+  document.getElementById("classPage").classList.add("hidden");
+  document.getElementById("studentsPage").classList.remove("hidden");
+  document.getElementById("searchArea").style.display = "block";
+  document.getElementById("classTitle").innerText = "الصف " + getGradeName(selectedGrade) + " — الشعبة " + selectedClass;
+  document.getElementById("searchInput").value = "";
+  renderStudents();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function renderStudents() {
+  const grid = document.getElementById("studentsGrid");
+  const search = document.getElementById("searchInput").value.trim().toLowerCase();
+  grid.innerHTML = "";
+
+  const filtered = students.filter(student => {
+    return (
+      student.grade === selectedGrade &&
+      student.class === selectedClass &&
+      student.name.toLowerCase().includes(search)
+    );
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="empty">
+        🌸<br><br>
+        لايوجد  اسم بهذا البحث<br>
+        جربي تكتبي الاسم مرة اخرى 💗
+      </div>
+    `;
+    return;
+  }
+
+  filtered.forEach(student => {
+    const totalScore = student.score + (student.finalExam || 0);
+    const isPerfect = totalScore === 100;
+    const isNeedsWork = student.status.includes("حظ أوفر") || student.status.includes("ثابر");
+
+    let extraClass = "";
+    let bannerHtml = "";
+
+    if (isPerfect) {
+      extraClass = "perfect";
+      bannerHtml = `<div class="perfect-banner">🌿 العلامة التامة 🌟</div>`;
+    } else if (isNeedsWork) {
+      extraClass = "needs-work";
+      bannerHtml = `<div class="needs-work-banner">⚠️ يحتاج لمثابرة أكثر</div>`;
+    }
+
+    const wrapper = document.createElement("div");
+    wrapper.className = `envelope-wrapper ${extraClass}`;
+    wrapper.onclick = () => toggleEnvelope(wrapper, totalScore);
+    wrapper.innerHTML = `
+      <div class="envelope">
+        <div class="env-front">
+          <div class="wax-seal">${isPerfect ? '🌟' : (isNeedsWork ? '🌱' : '💌')}</div>
+          <div class="student-name">${student.name}</div>
+          <div class="tap-hint">اضغطي لفتح الظرف ✉️</div>
+        </div>
+        <div class="env-back">
+          ${bannerHtml}
+          <span class="treat-badge">${student.treat}</span>
+          
+          <div class="details-box">
+            <div class="detail-item">
+              <span class="detail-label">📝 المذاكرة</span>
+              <span class="detail-val">${student.score}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">📄 الامتحان</span>
+              <span class="detail-val">${student.finalExam}</span>
+            </div>
+          </div>
+          
+          <div class="status">${student.status}</div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(wrapper);
+  });
+}
+
+function toggleEnvelope(element, totalScore) {
+  const isOpened = element.classList.contains("open");
+  if (!isOpened) {
+    element.classList.add("open");
+    if (totalScore >= 90) {
+      triggerConfetti();
+    }
+  } else {
+    element.classList.remove("open");
+  }
+}
+
+function triggerConfetti() {
+  const heart = confetti.shapeFromText({ text: "💖", scalar: 2 });
+  const star = confetti.shapeFromText({ text: "✨", scalar: 2 });
+  confetti({
+    shapes: [heart, star],
+    particleCount: 45,
+    spread: 90,
+    origin: { y: .6 }
+  });
+}
+
+function goGrades() {
+  selectedGrade = null;
+  document.getElementById("classPage").classList.add("hidden");
+  document.getElementById("gradePage").classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function goClasses() {
+  selectedClass = null;
+  document.getElementById("studentsPage").classList.add("hidden");
+  document.getElementById("classPage").classList.remove("hidden");
+  document.getElementById("searchArea").style.display = "none";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+</script>
+
+</body>
+</html>
